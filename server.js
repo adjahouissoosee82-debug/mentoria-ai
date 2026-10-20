@@ -16,7 +16,7 @@ app.use(express.json({ limit: "10mb" }));
 app.use(express.static(__dirname));
 
 const PORT = Number(process.env.PORT) || 3000;
-const MODEL_NAME = process.env.GEMINI_MODEL || "gemini-3.8-flash-lite";
+const MODEL_NAME = "gemini-2.5-flash";
 
 if (!process.env.GEMINI_API_KEY) {
     console.error("ERREUR : GEMINI_API_KEY est absente du fichier .env.");
