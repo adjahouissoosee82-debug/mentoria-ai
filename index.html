@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mentora AI - Plateforme Académique</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- En-tête de l'application -->
+    <header class="main-header">
+        <div class="logo-title">
+            <h1>Mentora AI</h1>
+        </div>
+
+        <!-- Onglets de changement de mode -->
+        <nav class="nav-tabs">
+            <button id="cours-tab-btn" class="tab-btn active" data-mode="tuteur">Questions de Cours</button>
+            <button id="memoire-tab-btn" class="tab-btn" data-mode="memoire">Rédaction & Mémoire</button>
+        </nav>
+
+        <!-- Bouton d'exportation PDF -->
+        <div class="header-actions">
+            <button id="exportPdfBtn" class="export-btn">📄 Télécharger en PDF</button>
+        </div>
+    </header>
+
+    <!-- Zone principale de discussion -->
+    <main class="main-container">
+        <!-- Zone d'affichage des messages -->
+        <div id="coursChatBox" class="chat-box">
+            <div class="message-bubble bot-message">
+                <strong>Mentora AI :</strong> 
+                <div class="message-content">
+                    Bonjour ! Pose tes questions de cours, importe une image de schéma ou prends une photo via le bouton ci-dessous. Je suis là pour t'accompagner.
+                </div>
+            </div>
+        </div>
+
+        <!-- Zone de prévisualisation du fichier joint -->
+        <div id="filePreview" class="file-preview-container" style="display: none;"></div>
+
+        <!-- Barre de saisie en bas -->
+        <div class="input-bar">
+            <!-- Bouton pour importer une photo ou un document -->
+            <label for="fileInput" class="file-upload-btn" title="Joindre une image ou un document">
+                📎
+            </label>
+            <input type="file" id="fileInput" accept="image/*,.pdf,.txt" style="display: none;">
+
+            <textarea id="messageInput" placeholder="Pose ta question de cours, envoie un exercice ou un schéma..." rows="1"></textarea>
+            
+            <button id="sendButton" class="send-btn">Envoyer</button>
+        </div>
+    </main>
+
+    <!-- Script principal -->
+    <script src="script.js"></script>
+</body>
+</html>
