@@ -2,15 +2,15 @@
 // MENTORIA AI - SCRIPT FRONTEND
 // ==========================================
 
-document.addEventListener("DOMContentLoaded", () => {
-    const chatForm = document.getElementById("chat-form");
-    const userInput = document.getElementById("user-input");
-    const chatBox = document.getElementById("chat-box");
+document.addEventListener("DOMContentLoaded", function() {
+    var chatForm = document.getElementById("chat-form");
+    var userInput = document.getElementById("user-input");
+    var chatBox = document.getElementById("chat-box");
 
     if (chatForm) {
-        chatForm.addEventListener("submit", async (e) => {
+        chatForm.addEventListener("submit", async function(e) {
             e.preventDefault();
-            const message = userInput.value.trim();
+            var message = userInput.value.trim();
             if (!message) return;
 
             // Afficher le message de l'utilisateur
@@ -18,21 +18,22 @@ document.addEventListener("DOMContentLoaded", () => {
             userInput.value = "";
 
             // Afficher "Réflexion en cours..."
-            const loadingId = appendMessage("Mentoria AI", "Réflexion en cours...", "ai-message loading");
+            var loadingId = appendMessage("Mentoria AI", "Réflexion en cours...", "ai-message loading");
 
             try {
-                const response = await fetch("/api/chat", {
+                var response = await fetch("/api/chat", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
                     },
-                    body: JSON.stringify({ message })
+                    body: JSON.stringify({ message: message })
                 });
 
-                const data = await response.json();
+                var data = await response.json();
                 
                 // Supprimer le message de chargement
-                document.getElementById(loadingId).remove();
+                var loadingElement = document.getElementById(loadingId);
+                if (loadingElement) loadingElement.remove();
 
                 if (response.ok) {
                     appendMessage("Mentoria AI", data.reply, "ai-message");
@@ -40,7 +41,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     appendMessage("Mentoria AI", "Erreur : " + (data.error || "Une erreur est survenue."), "ai-message error");
                 }
             } catch (error) {
-                document.getElementById(loadingId).remove();
+                var loadingElement = document.getElementById(loadingId);
+                if (loadingElement) loadingElement.remove();
                 console.error("Erreur de connexion:", error);
                 appendMessage("Mentoria AI", "Impossible de joindre le serveur.", "ai-message error");
             }
@@ -48,11 +50,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function appendMessage(sender, text, className) {
-        const messageId = "msg-" + Date.now();
-        const messageDiv = document.createElement("div")`;
+        var messageId = "msg-" + Date.now();
+        var messageDiv = document.createElement("div");
         messageDiv.id = messageId;
-        messageDiv.className = `message ${className};
-        messageDiv.innerHTML = `<strong>${sender} :</strong> <p>${text}</p>`;
+        messageDiv.className = "message " + className;
+        messageDiv.innerHTML = "<strong>" + sender + " :</strong> <p>" + text + "</p>";
         chatBox.appendChild(messageDiv);
         chatBox.scrollTop = chatBox.scrollHeight;
         return messageId;
