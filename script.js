@@ -49,10 +49,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function appendMessage(sender, text, className) {
         const messageId = "msg-" + Date.now();
-        const messageDiv = document.createElement("div");
+        const messageDiv = document.createElement("div")`;
         messageDiv.id = messageId;
-        messageDiv.className = message ${className};
-        messageDiv.innerHTML = <strong>${sender} :</strong> <p>${text}</p>;
+        messageDiv.className = `message ${className};
+        messageDiv.innerHTML = `<strong>${sender} :</strong> <p>${text}</p>`;
         chatBox.appendChild(messageDiv);
         chatBox.scrollTop = chatBox.scrollHeight;
         return messageId;
