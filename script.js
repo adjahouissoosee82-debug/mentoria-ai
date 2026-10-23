@@ -1,68 +1,72 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const sendButton = document.getElementById('sendButton');
-    const userInput = document.getElementById('userInput');
-    const chatBox = document.getElementById('chatBox');
+document.addEventListener('DOMContentLoaded', function() {
+    var sendButton = document.getElementById('sendButton');
+    var userInput = document.getElementById('userInput');
+    var chatBox = document.getElementById('chatBox');
 
     if (!sendButton || !userInput || !chatBox) {
-        console.error("Éléments du chat introuvables dans le HTML.");
+        console.error("Éléments du chat introuvables.");
         return;
     }
 
-    async function sendMessage() {
-        const text = userInput.value.trim();
+    function sendMessage() {
+        var text = userInput.value.trim();
         if (!text) return;
 
-        // Afficher le message de l'utilisateur
         appendMessage("Moi", text, "user-message");
         userInput.value = "";
 
-        // Afficher un indicateur de chargement
-        const loadingId = appendMessage("Mentoria AI", "Réflexion en cours...", "ai-message loading");
+        var loadingId = "msg-loading-" + Date.now();
+        var loadingDiv = document.createElement("div");
+        loadingDiv.id = loadingId;
+        loadingDiv.className = "message ai-message loading";
+        loadingDiv.innerHTML = "<strong>Mentoria AI :</strong> <p>Réflexion en cours...</p>";
+        chatBox.appendChild(loadingDiv);
+        chatBox.scrollTop = chatBox.scrollHeight;
 
-        try {
-            const response = await fetch('/api/chat', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ prompt: text })
+        fetch('/api/chat', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ prompt: text })
+        })
+        .then(function(response) {
+            return response.json().then(function(data) {
+                return { ok: response.ok, data: data };
             });
-
-            const data = await response.json();
-
-            // Supprimer le message de chargement
-            const loadingElement = document.getElementById(loadingId);
+        })
+        .then(function(result) {
+            var loadingElement = document.getElementById(loadingId);
             if (loadingElement) loadingElement.remove();
 
-            if (response.ok) {
-                appendMessage("Mentoria AI", data.reply, "ai-message");
+            if (result.ok) {
+                appendMessage("Mentoria AI", result.data.reply, "ai-message");
             } else {
-                appendMessage("Mentoria AI", "Erreur : " + (data.error || "Erreur serveur"), "ai-message error");
+                appendMessage("Mentoria AI", "Erreur : " + (result.data.error || "Erreur serveur"), "ai-message error");
             }
-        } catch (error) {
+        })
+        .catch(function(error) {
             console.error("Erreur de connexion:", error);
-            const loadingElement = document.getElementById(loadingId);
+            var loadingElement = document.getElementById(loadingId);
             if (loadingElement) loadingElement.remove();
             appendMessage("Mentoria AI", "Impossible de joindre le serveur.", "ai-message error");
-        }
+        });
     }
 
     function appendMessage(sender, text, className) {
-        const messageId = "msg-" + Date.now() + "-" + Math.floor(Math.random() * 1000);
-        const messageDiv = document.createElement("div");
+        var messageId = "msg-" + Date.now() + Math.random();
+        var messageDiv = document.createElement("div");
         messageDiv.id = messageId;
         messageDiv.className = "message " + className;
-        messageDiv.innerHTML = <strong>${sender} :</strong> <p>${text}</p>;
+        messageDiv.innerHTML = "<strong>" + sender + " :</strong> <p>" + text + "</p>";
         chatBox.appendChild(messageDiv);
         chatBox.scrollTop = chatBox.scrollHeight;
         return messageId;
     }
 
-    // Écoute du clic sur le bouton Envoyer
     sendButton.addEventListener('click', sendMessage);
 
-    // Écoute de la touche "Entrée" dans la zone de texte
-    userInput.addEventListener('keydown', (e) => {
+    userInput.addEventListener('keydown', function(e) {
         if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
             sendMessage();
