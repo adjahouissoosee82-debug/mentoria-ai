@@ -38,7 +38,7 @@ app.post('/api/chat', async (req, res) => {
 
         // Utilisation de la nouvelle syntaxe officielle du SDK @google/genai
         const response = await genAI.models.generateContent({
-            model: "gemini-2.0-flash",
+            model: "gemini-3.8-flash",
             contents: prompt,
         });
 
