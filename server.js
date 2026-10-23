@@ -14,7 +14,7 @@ app.disable("x-powered-by");
 app.use(cors());
 app.use(express.json({ limit: "10mb" }));
 app.use(express.static(__dirname));
-
+const genAI = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 const PORT = Number(process.env.PORT) || 3000;
 const model = genAI.getGenerativeModel({ model: "gemini-3.8-flash" });
 
