@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    function appendMessage(sender, text, className) {
+   function appendMessage(sender, text, className) {
         var messageId = "msg-" + Date.now();
         var messageDiv = document.createElement("div");
         messageDiv.id = messageId;
