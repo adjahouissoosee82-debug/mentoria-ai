@@ -53,5 +53,5 @@ app.post('/api/chat', async (req, res) => {
 // DEMARRAGE DU SERVEUR
 // =================================================================
 app.listen(PORT, () => {
-    console.log(Serveur Mentora AI en ligne sur le port ${PORT});
+    console.log(`Serveur Mentora AI en ligne sur le port ${PORT}`);
 });
